@@ -11,8 +11,11 @@ func Get() *Config {
 	return &config
 }
 
-func init() {
-	configPath := flag.String("config", "./config/shortener.local.yaml", "config path")
+var configPath = flag.String("config", "./config/shortener.local.yaml", "config path")
+
+// Init вместо init, потому что с последним слишком трудно тестить.
+// Легче один раз вызвать в main
+func Init() {
 	flag.Parse()
 	viper.SetConfigType("yaml")
 	viper.SetConfigFile(*configPath)
@@ -30,12 +33,12 @@ type Config struct {
 	Http     HTTP     `mapstructure:"http"`
 	Storage  string   `mapstructure:"storage"`
 	Postgres Postgres `mapstructure:"postgres"`
-	Memory   Memory   `mapstructure:"memory"`
 }
 
 type Service struct {
-	Name              string `mapstructure:"service"`
-	URLEncodingLength int    `mapstructure:"urlEncodingLength"`
+	Name                 string `mapstructure:"name"`
+	MinURLEncodingLength int    `mapstructure:"minUrlEncodingLength"`
+	ShortURLDomainName   string `mapstructure:"shortUrlDomainName"`
 }
 
 type HTTP struct {
@@ -44,13 +47,5 @@ type HTTP struct {
 }
 
 type Postgres struct {
-	RequestTimeoutSeconds int    `mapstructure:"requestTimeoutSeconds"`
-	Port                  int    `mapstructure:"port"`
-	User                  string `mapstructure:"user"`
-	Password              string `mapstructure:"password"`
-	Database              string `mapstructure:"database"`
-}
-
-type Memory struct {
-	RequestTimeoutSeconds int `mapstructure:"requestTimeoutSeconds"`
+	URL string `mapstructure:"url"`
 }

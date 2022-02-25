@@ -1,13 +1,17 @@
 package http
 
-import "github.com/go-chi/chi/v5"
+import (
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+)
 
 func (s *server) initRoutes() {
 	r := chi.NewRouter()
-	r.Route("/api/v1", func(r chi.Router) {
-		r.Get("/shorturl", s.getOriginalURL)
-		r.Post("/shorturl", s.generateShortURL)
+	r.Route("/api/v1/shortener", func(r chi.Router) {
+		r.Use(middleware.SetHeader("Content-Type", "application/json"))
+		r.Get("/", s.getOriginalURL)
+		r.Post("/", s.createAndGetShortURL)
 	})
 
-	s.Router = r
+	s.router = r
 }

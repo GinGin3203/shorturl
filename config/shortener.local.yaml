@@ -1,15 +1,10 @@
 service:
   name: url_shortener
-  urlEncodingLength: 5
+  minUrlEncodingLength: 5
+  shortUrlDomainName: o.co
 http:
   port: 8080
-  requestTimeoutSeconds: 5
+  requestTimeoutSeconds: 20
 storage: postgres # [memory, postgres]
 postgres:
-  requestTimeoutSeconds: 3
-  port: 5432
-  user: postgres
-  password: postgres
-  database: shortener
-memory:
-  requestTimeoutSeconds: 2
+  url: "postgresql://postgres:postgres@db_postgres:5432/shortener"
