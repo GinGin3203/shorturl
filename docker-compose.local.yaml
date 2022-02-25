@@ -11,6 +11,7 @@ services:
     ports:
       - "5432:5432"
   shortener:
+    restart: on-failure
     container_name: shortener_service
     image: "gingin3203/shortener:0.0.1"
     build:
